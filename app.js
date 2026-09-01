@@ -1,4 +1,38 @@
+import { initializeApp as initializeFirebaseApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAYlCfmzswHtDgv4f79IijxHXXD1VxxPMs",
+  authDomain: "lessonflow-tutor.firebaseapp.com",
+  projectId: "lessonflow-tutor",
+  storageBucket: "lessonflow-tutor.firebasestorage.app",
+  messagingSenderId: "1099018800716",
+  appId: "1:1099018800716:web:8ce475f656f12f81a86ee9",
+};
+
+const firebaseApp = initializeFirebaseApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+
 const STORAGE_KEY = "lessonflow-data-v1";
+const LAST_USER_KEY = "lessonflow-last-user";
 
 const defaultState = {
   version: 1,
@@ -12,6 +46,12 @@ let currentView = "today";
 let selectedWeekStart = startOfWeek(new Date());
 let pendingLessonAfterStudent = false;
 let toastTimer;
+let syncTimer;
+let currentUser = null;
+let cloudReady = false;
+let unsubscribeCloud = null;
+let lastSyncedState = "";
+let authMode = "login";
 
 const els = {
   todayLabel: document.querySelector("#todayLabel"),
@@ -36,6 +76,17 @@ const els = {
   studentModalTitle: document.querySelector("#studentModalTitle"),
   deleteStudentButton: document.querySelector("#deleteStudentButton"),
   toast: document.querySelector("#toast"),
+  authGate: document.querySelector("#authGate"),
+  authForm: document.querySelector("#authForm"),
+  authTitle: document.querySelector("#authTitle"),
+  authKicker: document.querySelector("#authKicker"),
+  authDescription: document.querySelector("#authDescription"),
+  authMessage: document.querySelector("#authMessage"),
+  authSubmitButton: document.querySelector("#authSubmitButton"),
+  toggleAuthModeButton: document.querySelector("#toggleAuthModeButton"),
+  forgotPasswordButton: document.querySelector("#forgotPasswordButton"),
+  syncStatus: document.querySelector("#syncStatus"),
+  accountEmail: document.querySelector("#accountEmail"),
 };
 
 const viewTitles = {
@@ -69,6 +120,38 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  if (cloudReady && currentUser) scheduleCloudSave();
+}
+
+function scheduleCloudSave() {
+  clearTimeout(syncTimer);
+  updateSyncStatus("Сохранение…", "saving");
+  syncTimer = setTimeout(syncCloudState, 350);
+}
+
+async function syncCloudState() {
+  if (!cloudReady || !currentUser) return;
+  const serialized = JSON.stringify(state);
+  try {
+    await setDoc(
+      doc(db, "users", currentUser.uid),
+      { payload: state, updatedAt: serverTimestamp() },
+      { merge: true },
+    );
+    lastSyncedState = serialized;
+    updateSyncStatus("Синхронизировано", "synced");
+  } catch (error) {
+    console.error("Cloud sync failed", error);
+    updateSyncStatus("Нет соединения", "error");
+  }
+}
+
+function updateSyncStatus(text, mode = "saving") {
+  if (!els.syncStatus) return;
+  els.syncStatus.classList.remove("synced", "error");
+  if (mode === "synced") els.syncStatus.classList.add("synced");
+  if (mode === "error") els.syncStatus.classList.add("error");
+  els.syncStatus.querySelector("span").textContent = text;
 }
 
 function uid(prefix) {
@@ -371,6 +454,7 @@ function renderStudents() {
 
 function renderSettings() {
   els.tutorNameInput.value = state.settings.tutorName || "";
+  els.accountEmail.textContent = currentUser?.email || "—";
 }
 
 function plural(number, forms) {
@@ -569,7 +653,181 @@ async function importData(file) {
   }
 }
 
+function isValidCloudState(value) {
+  return value && Array.isArray(value.students) && Array.isArray(value.lessons);
+}
+
+async function loadCloudState(user) {
+  updateSyncStatus("Загрузка…", "saving");
+  const userRef = doc(db, "users", user.uid);
+
+  try {
+    const snapshot = await getDoc(userRef);
+    if (snapshot.exists() && isValidCloudState(snapshot.data().payload)) {
+      state = {
+        ...structuredClone(defaultState),
+        ...snapshot.data().payload,
+        settings: { ...defaultState.settings, ...(snapshot.data().payload.settings || {}) },
+      };
+    } else {
+      const lastUserId = localStorage.getItem(LAST_USER_KEY);
+      if (lastUserId && lastUserId !== user.uid) {
+        state = structuredClone(defaultState);
+      }
+      await setDoc(userRef, { payload: state, updatedAt: serverTimestamp() });
+      showToast("Данные сохранены в облаке");
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(LAST_USER_KEY, user.uid);
+    lastSyncedState = JSON.stringify(state);
+    cloudReady = true;
+    render();
+    updateSyncStatus("Синхронизировано", "synced");
+
+    if (unsubscribeCloud) unsubscribeCloud();
+    unsubscribeCloud = onSnapshot(
+      userRef,
+      (remoteSnapshot) => {
+        if (!remoteSnapshot.exists()) return;
+        const remoteState = remoteSnapshot.data().payload;
+        if (!isValidCloudState(remoteState)) return;
+        const serialized = JSON.stringify(remoteState);
+        if (serialized === lastSyncedState) return;
+        lastSyncedState = serialized;
+        state = {
+          ...structuredClone(defaultState),
+          ...remoteState,
+          settings: { ...defaultState.settings, ...(remoteState.settings || {}) },
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        render();
+        updateSyncStatus("Синхронизировано", "synced");
+      },
+      (error) => {
+        console.error("Cloud listener failed", error);
+        updateSyncStatus("Нет соединения", "error");
+      },
+    );
+  } catch (error) {
+    console.error("Cloud load failed", error);
+    cloudReady = false;
+    updateSyncStatus("Ошибка синхронизации", "error");
+    showToast("Не удалось загрузить облачные данные");
+  }
+}
+
+async function initializeCloud() {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch (error) {
+    console.warn("Auth persistence unavailable", error);
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    clearTimeout(syncTimer);
+    cloudReady = false;
+    if (unsubscribeCloud) {
+      unsubscribeCloud();
+      unsubscribeCloud = null;
+    }
+
+    currentUser = user;
+    if (!user) {
+      els.authGate.classList.remove("hidden");
+      els.accountEmail.textContent = "—";
+      updateSyncStatus("Требуется вход", "error");
+      return;
+    }
+
+    els.authGate.classList.add("hidden");
+    els.accountEmail.textContent = user.email || "Аккаунт Firebase";
+    await loadCloudState(user);
+  });
+}
+
+function setAuthMessage(message = "", success = false) {
+  els.authMessage.textContent = message;
+  els.authMessage.classList.toggle("visible", Boolean(message));
+  els.authMessage.classList.toggle("success", success);
+}
+
+function setAuthLoading(loading) {
+  els.authSubmitButton.disabled = loading;
+  els.authSubmitButton.textContent = loading
+    ? "Подождите…"
+    : authMode === "login" ? "Войти" : "Создать аккаунт";
+}
+
+function setAuthMode(mode) {
+  authMode = mode;
+  const isLogin = mode === "login";
+  els.authKicker.textContent = isLogin ? "С возвращением" : "Первый вход";
+  els.authTitle.textContent = isLogin ? "Войдите в кабинет" : "Создайте аккаунт";
+  els.authDescription.textContent = isLogin
+    ? "Используйте email и пароль, чтобы открыть расписание."
+    : "Придумайте пароль — расписание будет доступно на всех ваших устройствах.";
+  els.authSubmitButton.textContent = isLogin ? "Войти" : "Создать аккаунт";
+  els.toggleAuthModeButton.textContent = isLogin ? "Создать новый аккаунт" : "У меня уже есть аккаунт";
+  els.forgotPasswordButton.classList.toggle("hidden", !isLogin);
+  els.authForm.elements.password.autocomplete = isLogin ? "current-password" : "new-password";
+  setAuthMessage();
+}
+
+function authErrorMessage(error) {
+  const messages = {
+    "auth/invalid-credential": "Неверный email или пароль.",
+    "auth/invalid-email": "Проверьте адрес электронной почты.",
+    "auth/email-already-in-use": "Аккаунт с таким email уже существует.",
+    "auth/weak-password": "Пароль должен содержать не менее 6 символов.",
+    "auth/too-many-requests": "Слишком много попыток. Попробуйте немного позже.",
+    "auth/network-request-failed": "Нет соединения с интернетом.",
+  };
+  return messages[error?.code] || "Не удалось выполнить вход. Попробуйте ещё раз.";
+}
+
+async function handleAuthSubmit(event) {
+  event.preventDefault();
+  setAuthMessage();
+  setAuthLoading(true);
+  const form = new FormData(els.authForm);
+  const email = form.get("email").trim();
+  const password = form.get("password");
+
+  try {
+    if (authMode === "login") {
+      await signInWithEmailAndPassword(auth, email, password);
+    } else {
+      await createUserWithEmailAndPassword(auth, email, password);
+    }
+    els.authForm.reset();
+  } catch (error) {
+    setAuthMessage(authErrorMessage(error));
+  } finally {
+    setAuthLoading(false);
+  }
+}
+
+async function handlePasswordReset() {
+  const email = els.authForm.elements.email.value.trim();
+  if (!email) {
+    setAuthMessage("Сначала введите email, на который отправить письмо.");
+    els.authForm.elements.email.focus();
+    return;
+  }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    setAuthMessage("Письмо для восстановления пароля отправлено.", true);
+  } catch (error) {
+    setAuthMessage(authErrorMessage(error));
+  }
+}
+
 function bindEvents() {
+  els.authForm.addEventListener("submit", handleAuthSubmit);
+  els.toggleAuthModeButton.addEventListener("click", () => setAuthMode(authMode === "login" ? "register" : "login"));
+  els.forgotPasswordButton.addEventListener("click", handlePasswordReset);
+
   document.addEventListener("click", (event) => {
     const navButton = event.target.closest("[data-view]");
     if (navButton) showView(navButton.dataset.view);
@@ -639,8 +897,17 @@ function bindEvents() {
 
   document.querySelector("#exportButton").addEventListener("click", exportData);
   document.querySelector("#importInput").addEventListener("change", (event) => importData(event.target.files[0]));
+  document.querySelector("#logoutButton").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      setAuthMode("login");
+      showToast("Вы вышли из аккаунта");
+    } catch {
+      showToast("Не удалось выйти из аккаунта");
+    }
+  });
   document.querySelector("#clearDataButton").addEventListener("click", () => {
-    if (!confirm("Точно удалить всех учеников и все занятия на этом устройстве?")) return;
+    if (!confirm("Точно удалить всех учеников и все занятия в облаке?")) return;
     state = structuredClone(defaultState);
     saveState();
     render();
@@ -656,6 +923,7 @@ function bindEvents() {
 
 bindEvents();
 render();
+initializeCloud();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));

@@ -14,6 +14,48 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <section class="auth-gate" id="authGate" aria-label="Вход в LessonFlow">
+      <div class="auth-visual">
+        <div class="auth-visual-content">
+          <span class="auth-badge">English tutor planner</span>
+          <h2>Расписание всегда<br />с вами</h2>
+          <p>Занятия, ученики и оплаты безопасно сохраняются в облаке и доступны на всех устройствах.</p>
+          <div class="auth-benefits">
+            <span>✓ Синхронизация</span>
+            <span>✓ Защищённый вход</span>
+            <span>✓ Резервная копия</span>
+          </div>
+        </div>
+      </div>
+      <div class="auth-form-side">
+        <div class="auth-card">
+          <div class="brand auth-brand">
+            <span class="brand-mark">LF</span>
+            <span><strong>LessonFlow</strong><small>для репетитора</small></span>
+          </div>
+          <p class="section-kicker" id="authKicker">С возвращением</p>
+          <h1 id="authTitle">Войдите в кабинет</h1>
+          <p class="auth-description" id="authDescription">Используйте email и пароль, чтобы открыть расписание.</p>
+          <form id="authForm" class="auth-form">
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" required placeholder="name@example.com" />
+            </label>
+            <label>
+              Пароль
+              <input name="password" type="password" autocomplete="current-password" minlength="6" required placeholder="Не менее 6 символов" />
+            </label>
+            <p class="auth-message" id="authMessage" role="status"></p>
+            <button class="primary-button auth-submit" type="submit" id="authSubmitButton">Войти</button>
+          </form>
+          <button class="auth-link" type="button" id="forgotPasswordButton">Забыли пароль?</button>
+          <div class="auth-divider"><span>или</span></div>
+          <button class="secondary-button auth-switch" type="button" id="toggleAuthModeButton">Создать новый аккаунт</button>
+          <small class="auth-footnote">При первом входе создайте аккаунт. Данные будут доступны только после авторизации.</small>
+        </div>
+      </div>
+    </section>
+
     <div class="app-shell">
       <aside class="sidebar">
         <a class="brand" href="#" aria-label="LessonFlow — главная">
@@ -56,6 +98,7 @@
             <h1 id="pageTitle">Добрый день!</h1>
           </div>
           <div class="topbar-actions">
+            <span class="sync-status" id="syncStatus"><i></i><span>Подключение…</span></span>
             <button class="icon-button" id="goTodayButton" title="Перейти к текущей неделе" aria-label="Текущая неделя">⌖</button>
             <button class="primary-button" id="addLessonButton">
               <span aria-hidden="true">＋</span> Добавить занятие
@@ -143,6 +186,19 @@
 
         <section id="settingsView" class="view" aria-label="Настройки">
           <div class="settings-grid">
+            <section class="panel settings-card account-card">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="section-kicker">Аккаунт</p>
+                  <h2>Облачная синхронизация</h2>
+                </div>
+                <span class="cloud-badge">Firebase</span>
+              </div>
+              <p class="account-email" id="accountEmail">—</p>
+              <p class="muted">Расписание автоматически сохраняется и появляется на всех устройствах после входа.</p>
+              <button class="secondary-button" id="logoutButton">Выйти из аккаунта</button>
+            </section>
+
             <section class="panel settings-card">
               <div class="panel-heading compact">
                 <div>
@@ -183,7 +239,7 @@
                   <h2>Удалить все данные</h2>
                 </div>
               </div>
-              <p class="muted">Действие удалит учеников и занятия только на этом устройстве.</p>
+              <p class="muted">Действие очистит учеников и занятия в облаке и на всех подключённых устройствах.</p>
               <button class="danger-button" id="clearDataButton">Удалить данные</button>
             </section>
           </div>
@@ -327,6 +383,6 @@
     </dialog>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js" defer></script>
+    <script type="module" src="./app.js"></script>
   </body>
 </html>
