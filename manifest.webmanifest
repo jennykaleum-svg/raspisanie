@@ -1,0 +1,18 @@
+{
+  "name": "LessonFlow — расписание репетитора",
+  "short_name": "LessonFlow",
+  "description": "Расписание занятий, ученики, оплаты и заметки",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f3ed",
+  "theme_color": "#163b36",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
