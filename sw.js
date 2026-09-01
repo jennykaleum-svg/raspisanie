@@ -1,4 +1,4 @@
-const CACHE_NAME = "lessonflow-v3";
+const CACHE_NAME = "lessonflow-v4";
 const APP_ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./icons/icon.svg"];
 
 self.addEventListener("install", (event) => {

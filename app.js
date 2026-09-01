@@ -68,6 +68,7 @@ const els = {
   tutorNameInput: document.querySelector("#tutorNameInput"),
   lessonDialog: document.querySelector("#lessonDialog"),
   lessonForm: document.querySelector("#lessonForm"),
+  lessonStudentOptions: document.querySelector("#lessonStudentOptions"),
   lessonModalTitle: document.querySelector("#lessonModalTitle"),
   deleteLessonButton: document.querySelector("#deleteLessonButton"),
   noStudentsHint: document.querySelector("#noStudentsHint"),
@@ -220,6 +221,20 @@ function getStudent(studentId) {
   return state.students.find((student) => student.id === studentId);
 }
 
+function lessonStudentIds(lesson) {
+  if (Array.isArray(lesson?.studentIds) && lesson.studentIds.length) return [...new Set(lesson.studentIds.filter(Boolean))];
+  return lesson?.studentId ? [lesson.studentId] : [];
+}
+
+function getLessonStudents(lesson) {
+  return lessonStudentIds(lesson).map(getStudent).filter(Boolean);
+}
+
+function lessonStudentNames(lesson, fallback = "Ученик") {
+  const names = getLessonStudents(lesson).map((student) => student.name);
+  return names.length ? names.join(", ") : fallback;
+}
+
 function sortedLessons(lessons) {
   return [...lessons].sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`));
 }
@@ -305,8 +320,7 @@ function renderStats() {
 }
 
 function lessonCard(lesson) {
-  const student = getStudent(lesson.studentId);
-  const studentName = student?.name || "Удалённый ученик";
+  const studentName = lessonStudentNames(lesson, "Удалённый ученик");
   const topic = lesson.topic || "Английский язык";
   return `<article class="lesson-card" data-lesson-id="${lesson.id}" tabindex="0" role="button" aria-label="Открыть занятие с ${escapeHTML(studentName)}">
     <div class="lesson-time">${escapeHTML(lesson.time)}<small>${lesson.duration} мин</small></div>
@@ -357,7 +371,7 @@ function renderNextLesson() {
     return;
   }
 
-  const student = getStudent(next.studentId);
+  const studentNames = lessonStudentNames(next);
   const date = parseLocalDate(next.date);
   const dateLabel = isSameDate(date, now)
     ? "Сегодня"
@@ -365,7 +379,7 @@ function renderNextLesson() {
 
   els.nextLesson.innerHTML = `<article class="next-lesson-card" data-lesson-id="${next.id}" role="button" tabindex="0">
     <span class="countdown">${dateLabel}, ${escapeHTML(next.time)}</span>
-    <h3>${escapeHTML(student?.name || "Ученик")}</h3>
+    <h3>${escapeHTML(studentNames)}</h3>
     <p>${escapeHTML(next.topic || "Английский язык")}</p>
     <div class="next-lesson-meta">
       <span>Формат<strong>${escapeHTML(next.format)}</strong></span>
@@ -398,10 +412,10 @@ function renderWeekCalendar() {
     const lessons = lessonsForDate(date);
     const lessonsHTML = lessons.length
       ? lessons.map((lesson) => {
-          const student = getStudent(lesson.studentId);
+          const studentNames = lessonStudentNames(lesson);
           return `<article class="calendar-lesson ${lesson.status}" data-lesson-id="${lesson.id}" tabindex="0" role="button">
             <time>${escapeHTML(lesson.time)} · ${lesson.duration} мин</time>
-            <strong>${escapeHTML(student?.name || "Ученик")}</strong>
+            <strong>${escapeHTML(studentNames)}</strong>
             <small>${escapeHTML(lesson.topic || lesson.format)}</small>
           </article>`;
         }).join("")
@@ -435,7 +449,7 @@ function renderStudents() {
   }
 
   els.studentsList.innerHTML = students.map((student) => {
-    const lessons = state.lessons.filter((lesson) => lesson.studentId === student.id);
+    const lessons = state.lessons.filter((lesson) => lessonStudentIds(lesson).includes(student.id));
     const completed = lessons.filter((lesson) => lesson.status === "completed").length;
     const next = sortedLessons(lessons).find((lesson) => lesson.status !== "cancelled" && new Date(`${lesson.date}T${lesson.time}:00`) >= new Date());
     const profile = [
@@ -474,14 +488,15 @@ function formatShortDate(iso) {
   return parseLocalDate(iso).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 
-function updateStudentOptions(selectedId = "") {
-  const select = els.lessonForm.elements.studentId;
+function updateStudentOptions(selectedIds = []) {
   const sorted = [...state.students].sort((a, b) => a.name.localeCompare(b.name, "ru"));
-  select.innerHTML = sorted.length
-    ? `<option value="">Выберите ученика</option>${sorted.map((student) => `<option value="${student.id}">${escapeHTML(student.name)}</option>`).join("")}`
-    : `<option value="">Нет учеников</option>`;
-  select.value = selectedId;
-  select.disabled = !sorted.length;
+  const selected = new Set(Array.isArray(selectedIds) ? selectedIds : selectedIds ? [selectedIds] : []);
+  els.lessonStudentOptions.innerHTML = sorted.length
+    ? sorted.map((student) => `<label class="student-choice">
+        <input name="studentIds" type="checkbox" value="${escapeHTML(student.id)}" ${selected.has(student.id) ? "checked" : ""} />
+        <span>${escapeHTML(student.name)}</span>
+      </label>`).join("")
+    : `<span class="student-options-empty">Нет учеников</span>`;
   els.noStudentsHint.classList.toggle("visible", !sorted.length);
   els.lessonForm.querySelector('[type="submit"]').disabled = !sorted.length;
 }
@@ -500,7 +515,7 @@ function openLessonDialog(lessonId = "", presetDate = "") {
   els.lessonModalTitle.textContent = lesson ? "Редактировать занятие" : "Новое занятие";
   els.deleteLessonButton.classList.toggle("hidden", !lesson);
   els.lessonForm.elements.lessonId.value = lesson?.id || "";
-  updateStudentOptions(lesson?.studentId || "");
+  updateStudentOptions(lessonStudentIds(lesson));
   els.lessonForm.elements.date.value = lesson?.date || presetDate || toISODate(new Date());
   els.lessonForm.elements.time.value = lesson?.time || "15:00";
   els.lessonForm.elements.duration.value = String(lesson?.duration || 60);
@@ -534,16 +549,22 @@ function handleLessonSubmit(event) {
   event.preventDefault();
   const form = new FormData(els.lessonForm);
   const existingId = form.get("lessonId");
-  const student = getStudent(form.get("studentId"));
+  const studentIds = form.getAll("studentIds").filter(Boolean);
+  if (!studentIds.length) {
+    showToast("Выберите хотя бы одного ученика");
+    return;
+  }
+  const students = studentIds.map(getStudent).filter(Boolean);
   const lesson = {
     id: existingId || uid("lesson"),
-    studentId: form.get("studentId"),
+    studentId: studentIds[0],
+    studentIds,
     date: form.get("date"),
     time: form.get("time"),
     duration: Number(form.get("duration")) || 60,
     format: form.get("format"),
     topic: form.get("topic").trim(),
-    rate: Number(form.get("rate")) || Number(student?.rate) || 0,
+    rate: Number(form.get("rate")) || students.reduce((sum, student) => sum + (Number(student.rate) || 0), 0),
     status: form.get("status"),
     paid: form.get("paid") === "on",
     notes: form.get("notes").trim(),
@@ -593,7 +614,7 @@ function handleStudentSubmit(event) {
     pendingLessonAfterStudent = false;
     setTimeout(() => {
       openLessonDialog();
-      updateStudentOptions(student.id);
+      updateStudentOptions([student.id]);
       els.lessonForm.elements.rate.value = student.rate || "";
     }, 120);
   }
@@ -612,13 +633,18 @@ function deleteLesson() {
 function deleteStudent() {
   const id = els.studentForm.elements.studentId.value;
   if (!id) return;
-  const lessonCount = state.lessons.filter((lesson) => lesson.studentId === id).length;
+  const lessonCount = state.lessons.filter((lesson) => lessonStudentIds(lesson).includes(id)).length;
   const message = lessonCount
-    ? `Удалить ученика и все связанные занятия (${lessonCount})?`
+    ? `Удалить ученика? Индивидуальные занятия будут удалены, а из групповых ученик будет исключён (${lessonCount} связанных занятий).`
     : "Удалить этого ученика?";
   if (!confirm(message)) return;
   state.students = state.students.filter((student) => student.id !== id);
-  state.lessons = state.lessons.filter((lesson) => lesson.studentId !== id);
+  state.lessons = state.lessons.flatMap((lesson) => {
+    const remainingIds = lessonStudentIds(lesson).filter((studentId) => studentId !== id);
+    if (!remainingIds.length) return [];
+    if (remainingIds.length === lessonStudentIds(lesson).length) return [lesson];
+    return [{ ...lesson, studentId: remainingIds[0], studentIds: remainingIds }];
+  });
   saveState();
   els.studentDialog.close();
   render();

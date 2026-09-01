@@ -266,11 +266,12 @@
         </div>
         <input type="hidden" name="lessonId" />
         <div class="form-grid">
-          <label class="full-width">
-            Ученик <span class="required">*</span>
-            <select name="studentId" required></select>
+          <fieldset class="student-picker full-width">
+            <legend>Ученики <span class="required">*</span></legend>
+            <div id="lessonStudentOptions" class="student-option-list"></div>
             <small class="field-hint" id="noStudentsHint">Сначала добавьте ученика в разделе «Ученики».</small>
-          </label>
+            <small class="student-picker-hint">Можно выбрать одного или нескольких учеников.</small>
+          </fieldset>
           <label>
             Дата <span class="required">*</span>
             <input name="date" type="date" required />
@@ -300,7 +301,7 @@
             <input name="topic" maxlength="100" placeholder="Например, Present Perfect" />
           </label>
           <label>
-            Стоимость, ₽
+            Стоимость всего занятия, ₽
             <input name="rate" type="number" min="0" step="50" inputmode="numeric" placeholder="1500" />
           </label>
           <label>
