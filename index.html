@@ -268,7 +268,19 @@
         <div class="form-grid">
           <fieldset class="student-picker full-width">
             <legend>Ученики <span class="required">*</span></legend>
-            <div id="lessonStudentOptions" class="student-option-list"></div>
+            <div class="student-dropdown" id="lessonStudentDropdown">
+              <button
+                class="student-dropdown-toggle"
+                id="lessonStudentToggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="lessonStudentOptions"
+              >
+                <span id="lessonStudentSummary">Выберите учеников</span>
+                <span class="student-dropdown-chevron" aria-hidden="true">⌄</span>
+              </button>
+              <div id="lessonStudentOptions" class="student-option-list student-dropdown-menu hidden"></div>
+            </div>
             <small class="field-hint" id="noStudentsHint">Сначала добавьте ученика в разделе «Ученики».</small>
             <small class="student-picker-hint">Можно выбрать одного или нескольких учеников.</small>
           </fieldset>
