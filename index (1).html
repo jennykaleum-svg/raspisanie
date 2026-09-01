@@ -1,0 +1,1118 @@
+<title>Неделя занятий английским</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#EFF1F6;
+  --surface:#FFFFFF;
+  --surface-2:#F7F8FC;
+  --line:#DEE1EB;
+  --line-strong:#C4C9D9;
+  --ink:#151926;
+  --ink-2:#525A72;
+  --ink-3:#838BA2;
+  --accent:#2E3A8C;
+  --accent-2:#4356BE;
+  --accent-soft:#E4E7F8;
+  --ok:#2C6E52;
+  --ok-soft:#DDEFE5;
+  --warn:#9A5720;
+  --warn-soft:#F8E9D8;
+  --shadow:0 1px 2px rgba(21,25,38,.06), 0 12px 32px rgba(21,25,38,.10);
+  --s0:#3E63C7; --s1:#A24B7A; --s2:#2F7D5E; --s3:#A2682B;
+  --s4:#6A4FB0; --s5:#1F757F; --s6:#AE4B45; --s7:#5D7038;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F121B;
+    --surface:#171B26;
+    --surface-2:#1D2230;
+    --line:#272D3D;
+    --line-strong:#39415A;
+    --ink:#E7EAF3;
+    --ink-2:#A3ABC0;
+    --ink-3:#767F97;
+    --accent:#98A5FF;
+    --accent-2:#B0BAFF;
+    --accent-soft:#212845;
+    --ok:#74C39B;
+    --ok-soft:#152C22;
+    --warn:#DFA469;
+    --warn-soft:#2C2116;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.5);
+    --s0:#8AA4F0; --s1:#E08FB4; --s2:#6FC49B; --s3:#DFA463;
+    --s4:#A991E8; --s5:#5FC0CB; --s6:#E68E89; --s7:#A6BE75;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F121B;
+  --surface:#171B26;
+  --surface-2:#1D2230;
+  --line:#272D3D;
+  --line-strong:#39415A;
+  --ink:#E7EAF3;
+  --ink-2:#A3ABC0;
+  --ink-3:#767F97;
+  --accent:#98A5FF;
+  --accent-2:#B0BAFF;
+  --accent-soft:#212845;
+  --ok:#74C39B;
+  --ok-soft:#152C22;
+  --warn:#DFA469;
+  --warn-soft:#2C2116;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.5);
+  --s0:#8AA4F0; --s1:#E08FB4; --s2:#6FC49B; --s3:#DFA463;
+  --s4:#A991E8; --s5:#5FC0CB; --s6:#E68E89; --s7:#A6BE75;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Golos Text","Segoe UI",system-ui,sans-serif;
+  font-size:15px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;text-wrap:balance}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+
+.app{max-width:1280px;margin:0 auto;padding:20px 20px 56px;display:flex;flex-direction:column;gap:16px}
+
+/* ---------- top bar ---------- */
+.topbar{
+  display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;
+  padding-bottom:14px;border-bottom:1px solid var(--line-strong);
+}
+.brand h1{
+  font-family:Literata,Georgia,serif;font-weight:600;font-size:26px;letter-spacing:-.01em;
+}
+.brand .sub{
+  margin:2px 0 0;color:var(--ink-3);font-size:12px;
+  text-transform:uppercase;letter-spacing:.11em;font-weight:500;
+}
+.tabs{display:flex;gap:2px;margin-left:auto;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:2px}
+.tab{
+  border:0;background:transparent;padding:7px 14px;border-radius:3px;cursor:pointer;
+  font-size:14px;font-weight:500;color:var(--ink-2);
+}
+.tab:hover{color:var(--ink)}
+.tab.is-on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.tools{display:flex;gap:8px;align-items:center}
+
+.btn{
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  padding:7px 13px;border-radius:4px;cursor:pointer;font-size:13.5px;font-weight:500;
+  transition:background .12s ease,border-color .12s ease;
+}
+.btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+:root[data-theme="dark"] .btn-primary{color:#10131C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn-primary{color:#10131C}}
+.btn-primary:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.btn-danger{color:var(--warn);border-color:var(--line-strong)}
+.btn-danger:hover{background:var(--warn-soft);border-color:var(--warn)}
+.btn-file{position:relative;overflow:hidden}
+.btn-file input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+
+/* ---------- banner ---------- */
+.banner{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;
+  padding:11px 14px;font-size:13.5px;color:var(--ink-2);
+}
+.banner b{color:var(--ink)}
+
+/* ---------- week bar ---------- */
+.weekbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav{display:flex;gap:4px}
+.nav .btn{padding:6px 11px}
+.nav .arrow{font-size:17px;line-height:1;padding:5px 12px}
+.weekbar h2{
+  font-family:Literata,Georgia,serif;font-weight:500;font-size:19px;
+}
+.weekbar h2 span{color:var(--ink-3);font-family:"JetBrains Mono",monospace;font-size:13px;margin-left:8px}
+.stats{display:flex;gap:0;margin-left:auto;flex-wrap:wrap;border:1px solid var(--line);border-radius:5px;background:var(--surface);overflow:hidden}
+.stat{padding:8px 16px;border-right:1px solid var(--line);min-width:88px}
+.stat:last-child{border-right:0}
+.stat .k{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:600}
+.stat .v{display:block;font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px}
+.stat.is-ok .v{color:var(--ok)}
+.stat.is-warn .v{color:var(--warn)}
+
+/* ---------- week grid ---------- */
+.gridwrap{overflow-x:auto;padding-bottom:4px}
+.grid{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
+  min-width:1000px;background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;
+}
+.day{display:flex;flex-direction:column;border-right:1px solid var(--line);min-height:230px}
+.day:last-child{border-right:0}
+.day.is-weekend{background:var(--surface-2)}
+.dayhead{
+  display:flex;align-items:baseline;gap:7px;padding:9px 11px;
+  border-bottom:1px solid var(--line);
+}
+.dayhead .dw{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ink-2)}
+.dayhead .dd{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3)}
+.dayhead .n{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3)}
+.day.is-today .dayhead{background:var(--accent-soft);border-bottom-color:var(--accent)}
+.day.is-today .dw{color:var(--accent)}
+.day.is-today .dd{color:var(--accent)}
+
+.les{
+  display:block;width:100%;text-align:left;padding:10px 11px 11px;
+  border:0;border-bottom:1px solid var(--line);background:transparent;
+  cursor:pointer;position:relative;transition:background .12s ease;
+}
+.les:hover{background:var(--accent-soft)}
+.les .t{
+  display:block;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:600;
+  font-variant-numeric:tabular-nums;color:var(--ink);
+}
+.les .t em{font-style:normal;font-weight:400;color:var(--ink-3)}
+.les .who{display:flex;align-items:center;gap:6px;margin-top:3px;font-weight:600;font-size:14px;line-height:1.25}
+.les .dot{width:8px;height:8px;border-radius:2px;background:var(--stu,var(--accent));flex:none}
+.les .meta{display:block;margin-top:3px;font-size:11.5px;color:var(--ink-3)}
+.les .topic{display:block;margin-top:5px;font-size:12px;color:var(--ink-2);border-left:2px solid var(--line-strong);padding-left:7px}
+.les .chips{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;align-items:center}
+.chip{
+  font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  padding:2.5px 6px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);
+}
+.chip.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.les .acts{display:flex;gap:4px;margin-left:auto}
+.mini{
+  border:1px solid var(--line-strong);background:var(--surface);border-radius:3px;
+  width:26px;height:22px;font-size:12px;line-height:1;cursor:pointer;color:var(--ink-3);
+  display:grid;place-items:center;padding:0;
+}
+.mini:hover{border-color:var(--ink-3);color:var(--ink)}
+.mini.on{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:700}
+.mini.on-pay{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.les.is-cancelled .t,.les.is-cancelled .who{text-decoration:line-through;color:var(--ink-3)}
+.les.is-cancelled{opacity:.75}
+
+.addrow{
+  border:0;background:transparent;color:var(--ink-3);cursor:pointer;
+  padding:10px 11px;text-align:left;font-size:13px;margin-top:auto;
+}
+.addrow:hover{color:var(--accent);background:var(--accent-soft)}
+
+/* ---------- students ---------- */
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line-strong);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);
+  font-weight:700;background:var(--surface-2);
+}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.name{display:flex;align-items:center;gap:8px;font-weight:600}
+.name i{width:8px;height:8px;border-radius:2px;background:var(--stu);flex:none}
+.note{color:var(--ink-2);font-size:13px;max-width:280px}
+tfoot td{font-weight:600;background:var(--surface-2);border-top:1px solid var(--line-strong)}
+
+.empty{padding:44px 20px;text-align:center;color:var(--ink-3);font-size:14px}
+
+/* ---------- money ---------- */
+.monthbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.monthbar h2{font-family:Literata,Georgia,serif;font-weight:500;font-size:19px;text-transform:capitalize}
+#viewMoney .stats{margin-left:0;width:100%;margin-bottom:20px}
+#viewMoney .stat{flex:1 1 auto}
+.block{background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;overflow:hidden}
+.blockhead{
+  padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;
+  background:var(--surface-2);
+}
+.blockhead h3{font-family:Literata,Georgia,serif;font-weight:600;font-size:15px}
+.blockhead .sum{margin-left:auto;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:15px;color:var(--warn)}
+.debt{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.debt:last-child{border-bottom:0}
+.debt i{width:8px;height:8px;border-radius:2px;background:var(--stu);flex:none}
+.debt .who{font-weight:600}
+.debt .n{color:var(--ink-3);font-size:12.5px}
+.debt .amt{margin-left:auto;font-family:"JetBrains Mono",monospace;font-weight:600;font-variant-numeric:tabular-nums;color:var(--warn)}
+
+/* ---------- history ---------- */
+tbody tr.stu{cursor:pointer}
+tbody tr.stu:hover{background:var(--surface-2)}
+tr.hist td{background:var(--surface-2);padding:0}
+.hist-in{padding:12px 16px;display:flex;flex-direction:column;gap:9px}
+.hitem{display:flex;gap:12px;align-items:flex-start;font-size:13px}
+.hitem .hd{font-family:"JetBrains Mono",monospace;color:var(--ink-3);flex:none;width:78px;font-size:12px;padding-top:1px}
+.hitem .hb{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.hitem .ht{display:block;font-weight:600}
+.hitem .hh{display:block;color:var(--ink-2)}
+.hitem .hs{display:flex;gap:5px;margin-top:2px}
+.chev{display:inline-block;color:var(--ink-3);font-weight:400;margin-left:1px;transition:transform .12s ease}
+tr.is-open .chev{transform:rotate(90deg);color:var(--accent)}
+.hist-empty{color:var(--ink-3);font-size:13px}
+
+/* ---------- modal ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(12,15,24,.5);backdrop-filter:blur(2px);
+  display:grid;place-items:center;padding:20px;z-index:50;
+}
+.sheet{
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;
+  box-shadow:var(--shadow);width:min(560px,100%);max-height:88vh;overflow-y:auto;
+}
+.sheet header{padding:18px 22px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.sheet header h3{font-family:Literata,Georgia,serif;font-weight:600;font-size:19px}
+.sheet .body{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+.sheet footer{
+  padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center;
+  position:sticky;bottom:0;background:var(--surface);
+}
+.sheet footer .spacer{margin-left:auto}
+.legend{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);
+  font-weight:700;padding-bottom:6px;border-bottom:1px solid var(--line);margin-bottom:12px;
+}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.row.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:12px;font-weight:600;color:var(--ink-2)}
+.f input,.f select,.f textarea{
+  font:inherit;font-size:14px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-strong);border-radius:4px;padding:8px 10px;width:100%;
+}
+.f textarea{resize:vertical;min-height:60px}
+.f input[type=time],.f input[type=date],.f input[type=number]{font-family:"JetBrains Mono",monospace}
+.f input:focus,.f select:focus,.f textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+.seg{display:flex;border:1px solid var(--line-strong);border-radius:4px;overflow:hidden}
+.seg button{
+  flex:1;border:0;border-right:1px solid var(--line);background:var(--surface-2);
+  padding:8px 6px;cursor:pointer;font-size:13px;color:var(--ink-2);
+}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.check{display:flex;align-items:center;gap:9px;font-size:14px;cursor:pointer;padding:2px 0}
+.check input{width:17px;height:17px;accent-color:var(--accent);margin:0}
+
+.toast{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:80;
+  background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:5px;
+  font-size:13.5px;box-shadow:var(--shadow);
+}
+
+.foot{color:var(--ink-3);font-size:12.5px;line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+
+@media (max-width:880px){
+  .app{padding:16px 14px 44px}
+  .grid{min-width:0;grid-template-columns:1fr}
+  .day{border-right:0;border-bottom:1px solid var(--line-strong);min-height:0}
+  .day:last-child{border-bottom:0}
+  .stats{margin-left:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat{min-width:0;padding:8px 12px;border-bottom:1px solid var(--line)}
+  .stat .v{font-size:14px;white-space:nowrap}
+  .stat:nth-child(3n){border-right:0}
+  .stat:nth-child(n+4){border-bottom:0}
+  .tabs{margin-left:0}
+  .row,.row.three{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+}
+@media print{
+  .topbar .tabs,.tools,.nav,.addrow,.acts,.banner,.foot,.overlay{display:none !important}
+  body{background:#fff}
+  .grid{min-width:0;break-inside:avoid}
+}
+</style>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <h1>Расписание занятий</h1>
+      <p class="sub">Английский язык · частная практика</p>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab is-on" data-view="week" role="tab" aria-selected="true">Неделя</button>
+      <button class="tab" data-view="students" role="tab" aria-selected="false">Ученики</button>
+      <button class="tab" data-view="money" role="tab" aria-selected="false">Деньги</button>
+    </nav>
+    <div class="tools">
+      <button class="btn" id="backupBtn">Сохранить копию</button>
+      <label class="btn btn-file">Загрузить копию<input type="file" id="restoreInput" accept=".json,application/json"></label>
+    </div>
+  </header>
+
+  <div class="banner" id="demoBanner" hidden>
+    <span><b>Это примеры.</b> Нажмите на занятие, чтобы изменить его, или удалите примеры и добавьте своих учеников.</span>
+    <button class="btn" id="clearDemo">Удалить примеры</button>
+  </div>
+
+  <section class="weekbar" id="weekbar">
+    <div class="nav">
+      <button class="btn arrow" id="prevWeek" aria-label="Предыдущая неделя">‹</button>
+      <button class="btn" id="thisWeek">Сегодня</button>
+      <button class="btn arrow" id="nextWeek" aria-label="Следующая неделя">›</button>
+    </div>
+    <h2 id="weekLabel"></h2>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <main>
+    <section id="viewWeek"><div class="gridwrap"><div class="grid" id="grid"></div></div></section>
+    <section id="viewStudents" hidden><div class="tablewrap" id="studentsWrap"></div></section>
+    <section id="viewMoney" hidden>
+      <div class="monthbar">
+        <div class="nav">
+          <button class="btn arrow" id="prevMonth" aria-label="Предыдущий месяц">‹</button>
+          <button class="btn" id="thisMonth">Этот месяц</button>
+          <button class="btn arrow" id="nextMonth" aria-label="Следующий месяц">›</button>
+        </div>
+        <h2 id="monthLabel"></h2>
+      </div>
+      <div class="stats" id="monthStats"></div>
+      <div id="debtsWrap"></div>
+    </section>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <header><h3 id="sheetTitle">Занятие</h3></header>
+    <div class="body">
+      <div>
+        <div class="legend">Постоянные данные</div>
+        <div class="f"><label for="fStudent">Ученик или группа</label><input id="fStudent" type="text" placeholder="Например, Аня Петрова" autocomplete="off"></div>
+        <div class="row three" style="margin-top:12px">
+          <div class="f"><label for="fDay">День недели</label><select id="fDay"></select></div>
+          <div class="f"><label for="fTime">Начало</label><input id="fTime" type="time" step="300"></div>
+          <div class="f"><label for="fDur">Минут</label><input id="fDur" type="number" min="15" max="240" step="5"></div>
+        </div>
+        <div class="row three" style="margin-top:12px">
+          <div class="f"><label for="fLevel">Уровень</label><select id="fLevel"></select></div>
+          <div class="f"><label for="fFormat">Формат</label><select id="fFormat"><option value="online">Онлайн</option><option value="offline">Очно</option></select></div>
+          <div class="f"><label for="fKind">Тип</label><select id="fKind"><option value="solo">Индивидуально</option><option value="group">Группа</option></select></div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div class="f"><label for="fPrice">Стоимость, ₽</label><input id="fPrice" type="number" min="0" step="50"></div>
+          <div class="f"><label for="fRepeat">Повторение</label><select id="fRepeat"><option value="weekly">Каждую неделю</option><option value="once">Разовое занятие</option></select></div>
+        </div>
+        <div class="f" id="dateField" style="margin-top:12px" hidden><label for="fDate">Дата занятия</label><input id="fDate" type="date"></div>
+        <div class="f" style="margin-top:12px"><label for="fNote">Заметка об ученике</label><textarea id="fNote" placeholder="Цель, учебник, особенности, контакты родителей"></textarea></div>
+      </div>
+
+      <div id="occBlock">
+        <div class="legend" id="occLegend">Это занятие</div>
+        <div class="f"><label>Статус</label>
+          <div class="seg" id="fStatus">
+            <button type="button" data-status="planned">Запланировано</button>
+            <button type="button" data-status="done">Проведено</button>
+            <button type="button" data-status="cancelled">Отменено</button>
+          </div>
+        </div>
+        <label class="check" style="margin-top:12px"><input type="checkbox" id="fPaid"> Оплачено</label>
+        <div class="f" style="margin-top:12px"><label for="fTopic">Тема урока</label><input id="fTopic" type="text" placeholder="Present Perfect, Unit 4"></div>
+        <div class="f" style="margin-top:12px"><label for="fHw">Домашнее задание</label><textarea id="fHw" placeholder="Что задано к следующему разу"></textarea></div>
+      </div>
+    </div>
+    <footer>
+      <button class="btn btn-danger" id="deleteBtn">Удалить</button>
+      <span class="spacer"></span>
+      <button class="btn" id="cancelBtn">Отмена</button>
+      <button class="btn btn-primary" id="saveBtn">Сохранить</button>
+    </footer>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var KEY = "eng-tutor-schedule-v1";
+  var DAYS = ["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
+  var DAYS_SHORT = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  var LEVELS = ["A1","A2","B1","B2","C1","C2","Без уровня"];
+  var MONTHS_GEN = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+  var MONTHS_SHORT = ["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+
+  var money = new Intl.NumberFormat("ru-RU", {maximumFractionDigits:0});
+
+  /* ---------------- state ---------------- */
+
+  function demoState(){
+    return {
+      demo: true,
+      lessons: [
+        {id:"d1", student:"Аня Петрова", day:1, time:"17:00", dur:60, level:"B1", format:"online", kind:"solo", price:2000, repeat:"weekly", date:null, note:"Готовимся к устной части экзамена. Учебник Roadmap B1."},
+        {id:"d2", student:"Миша Ковалёв", day:2, time:"19:00", dur:45, level:"A2", format:"offline", kind:"solo", price:1500, repeat:"weekly", date:null, note:"7 класс, школьная программа. Заниматься дома у ученика."},
+        {id:"d3", student:"Группа «Beginners»", day:6, time:"11:00", dur:90, level:"A1", format:"online", kind:"group", price:3000, repeat:"weekly", date:null, note:"Трое взрослых, разговорный курс с нуля."}
+      ],
+      marks: {}
+    };
+  }
+
+  var state = load() || demoState();
+  var anchor = mondayOf(new Date());
+  var monthAnchor = (function(){ var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), 1); })();
+  var openStudent = null;
+  var view = "week";
+  var editing = null;      // lesson id or null (new)
+  var editingDate = null;  // Date object of the occurrence being edited
+  var formStatus = "planned";
+  var downloads = null;
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(!raw) return null;
+      var v = JSON.parse(raw);
+      if(!v || !Array.isArray(v.lessons)) return null;
+      if(!v.marks) v.marks = {};
+      return v;
+    }catch(e){ return null; }
+  }
+
+  function save(){
+    try{
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }catch(e){
+      toast("Не удалось сохранить: браузер блокирует хранение данных");
+    }
+  }
+
+  /* ---------------- dates ---------------- */
+
+  function mondayOf(d){
+    var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var off = (x.getDay() + 6) % 7;
+    x.setDate(x.getDate() - off);
+    return x;
+  }
+  function addDays(d, n){
+    var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    x.setDate(x.getDate() + n);
+    return x;
+  }
+  function isoDate(d){
+    var m = String(d.getMonth()+1).padStart(2,"0");
+    var day = String(d.getDate()).padStart(2,"0");
+    return d.getFullYear() + "-" + m + "-" + day;
+  }
+  function weekKey(monday){
+    var t = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate()));
+    t.setUTCDate(t.getUTCDate() + 3);
+    var year = t.getUTCFullYear();
+    var jan1 = new Date(Date.UTC(year,0,1));
+    var wk = Math.ceil((((t - jan1) / 86400000) + 1) / 7);
+    return year + "-W" + String(wk).padStart(2,"0");
+  }
+  function mondayFromWeekKey(key){
+    var m = /^(\d{4})-W(\d{2})$/.exec(key);
+    if(!m) return null;
+    return addDays(mondayOf(new Date(+m[1], 0, 4)), (+m[2] - 1) * 7);
+  }
+  // Все отмеченные занятия за всё время, свежие сверху
+  function allOccurrences(){
+    var out = [];
+    Object.keys(state.marks).forEach(function(wk){
+      var monday = mondayFromWeekKey(wk);
+      if(!monday) return;
+      var week = state.marks[wk];
+      Object.keys(week).forEach(function(id){
+        var l = state.lessons.filter(function(x){ return x.id === id; })[0];
+        if(!l) return;
+        var date = l.repeat === "once"
+          ? (l.date ? new Date(l.date + "T00:00:00") : null)
+          : addDays(monday, (l.day || 1) - 1);
+        if(!date) return;
+        out.push({date: date, lesson: l, mark: week[id]});
+      });
+    });
+    out.sort(function(a,b){ return b.date - a.date; });
+    return out;
+  }
+  function sameDay(a,b){
+    return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+  }
+  function endTime(time, dur){
+    var p = String(time||"00:00").split(":");
+    var total = (parseInt(p[0],10)||0)*60 + (parseInt(p[1],10)||0) + (parseInt(dur,10)||0);
+    total = ((total % 1440) + 1440) % 1440;
+    return String(Math.floor(total/60)).padStart(2,"0") + ":" + String(total%60).padStart(2,"0");
+  }
+  function minutesOf(time){
+    var p = String(time||"00:00").split(":");
+    return (parseInt(p[0],10)||0)*60 + (parseInt(p[1],10)||0);
+  }
+
+  /* ---------------- helpers ---------------- */
+
+  function colorIndex(name){
+    var h = 0, s = String(name||"");
+    for(var i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+    return h % 8;
+  }
+  function markFor(key, id){
+    var w = state.marks[key];
+    if(!w) return null;
+    return w[id] || null;
+  }
+  function setMark(key, id, patch){
+    if(!state.marks[key]) state.marks[key] = {};
+    var cur = state.marks[key][id] || {status:"planned", paid:false, topic:"", hw:""};
+    for(var k in patch){ cur[k] = patch[k]; }
+    if(cur.status === "planned" && !cur.paid && !cur.topic && !cur.hw){
+      delete state.marks[key][id];
+      if(!Object.keys(state.marks[key]).length) delete state.marks[key];
+    } else {
+      state.marks[key][id] = cur;
+    }
+    save();
+  }
+  function lessonsOn(date){
+    var dow = ((date.getDay() + 6) % 7) + 1; // 1 = Mon
+    var iso = isoDate(date);
+    return state.lessons.filter(function(l){
+      if(l.repeat === "once") return l.date === iso;
+      return l.day === dow;
+    }).sort(function(a,b){ return minutesOf(a.time) - minutesOf(b.time); });
+  }
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+  var toastTimer;
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.hidden = true; }, 2600);
+  }
+
+  /* ---------------- render: week ---------------- */
+
+  function render(){
+    document.getElementById("demoBanner").hidden = !state.demo;
+    document.getElementById("viewWeek").hidden = view !== "week";
+    document.getElementById("viewStudents").hidden = view !== "students";
+    document.getElementById("viewMoney").hidden = view !== "money";
+    document.getElementById("weekbar").style.display = view === "week" ? "" : "none";
+    if(view === "week") renderWeek();
+    else if(view === "students") renderStudents();
+    else renderMoney();
+    renderFoot();
+  }
+
+  /* ---------- render: money ---------- */
+
+  var MONTHS_NOM = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+
+  function renderMoney(){
+    document.getElementById("monthLabel").textContent =
+      MONTHS_NOM[monthAnchor.getMonth()] + " " + monthAnchor.getFullYear();
+
+    var last = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth() + 1, 0).getDate();
+    var m = {count:0, minutes:0, billed:0, paid:0};
+    for(var d = 1; d <= last; d++){
+      var date = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth(), d);
+      var key = weekKey(mondayOf(date));
+      lessonsOn(date).forEach(function(l){
+        var mk = markFor(key, l.id);
+        if(!mk || mk.status !== "done") return;
+        m.count++;
+        m.minutes += (parseInt(l.dur,10) || 0);
+        m.billed += (parseFloat(l.price) || 0);
+        if(mk.paid) m.paid += (parseFloat(l.price) || 0);
+      });
+    }
+    var owed = m.billed - m.paid;
+    document.getElementById("monthStats").innerHTML =
+      tile("Проведено", m.count, "") +
+      tile("Часов", (m.minutes/60).toLocaleString("ru-RU", {maximumFractionDigits:1}), "") +
+      tile("Начислено", money.format(m.billed) + " ₽", "") +
+      tile("Оплачено", money.format(m.paid) + " ₽", "is-ok") +
+      tile("Не оплачено", money.format(owed) + " ₽", owed > 0 ? "is-warn" : "");
+
+    // Долги за всё время
+    var byStudent = {}, total = 0;
+    allOccurrences().forEach(function(o){
+      if(o.mark.status !== "done" || o.mark.paid) return;
+      var price = parseFloat(o.lesson.price) || 0;
+      var n = o.lesson.student || "Без имени";
+      if(!byStudent[n]) byStudent[n] = {name:n, sum:0, count:0, last:o.date};
+      byStudent[n].sum += price;
+      byStudent[n].count++;
+      total += price;
+    });
+    var rows = Object.keys(byStudent).map(function(k){ return byStudent[k]; })
+                     .sort(function(a,b){ return b.sum - a.sum; });
+
+    var html = '<div class="block"><div class="blockhead"><h3>Кто ещё не заплатил</h3>' +
+               (total ? '<span class="sum">' + money.format(total) + ' ₽</span>' : '') + '</div>';
+    if(!rows.length){
+      html += '<div class="empty">Долгов нет — все проведённые занятия оплачены.</div>';
+    } else {
+      rows.forEach(function(r){
+        html += '<div class="debt" style="--stu:var(--s' + colorIndex(r.name) + ')">' +
+                '<i></i><span class="who">' + esc(r.name) + '</span>' +
+                '<span class="n">' + r.count + ' ' + plural(r.count, ["занятие","занятия","занятий"]) +
+                ', последнее ' + r.last.getDate() + ' ' + MONTHS_SHORT[r.last.getMonth()] + '</span>' +
+                '<span class="amt">' + money.format(r.sum) + ' ₽</span></div>';
+      });
+    }
+    html += '</div>';
+    document.getElementById("debtsWrap").innerHTML = html;
+  }
+
+  function renderWeek(){
+    var key = weekKey(anchor);
+    var sunday = addDays(anchor, 6);
+    var label = anchor.getDate() + " " + (anchor.getMonth() === sunday.getMonth() ? "" : MONTHS_GEN[anchor.getMonth()] + " ") +
+                "– " + sunday.getDate() + " " + MONTHS_GEN[sunday.getMonth()];
+    document.getElementById("weekLabel").innerHTML = esc(label) + " <span>" + esc(key.replace("-W", " · неделя ")) + "</span>";
+
+    var today = new Date();
+    var grid = document.getElementById("grid");
+    var html = "";
+    var stats = {count:0, minutes:0, total:0, paid:0};
+
+    for(var i=0;i<7;i++){
+      var date = addDays(anchor, i);
+      var list = lessonsOn(date);
+      var cls = "day" + (i >= 5 ? " is-weekend" : "") + (sameDay(date, today) ? " is-today" : "");
+      html += '<div class="' + cls + '">';
+      html += '<div class="dayhead"><span class="dw">' + DAYS_SHORT[i] + '</span>' +
+              '<span class="dd">' + date.getDate() + " " + MONTHS_SHORT[date.getMonth()] + '</span>' +
+              (list.length ? '<span class="n">' + list.length + '</span>' : '') + '</div>';
+
+      for(var j=0;j<list.length;j++){
+        var l = list[j];
+        var m = markFor(key, l.id) || {status:"planned", paid:false, topic:"", hw:""};
+        if(m.status !== "cancelled"){
+          stats.count++;
+          stats.minutes += (parseInt(l.dur,10)||0);
+          stats.total += (parseFloat(l.price)||0);
+          if(m.paid) stats.paid += (parseFloat(l.price)||0);
+        }
+        var chips = "";
+        if(m.status === "done") chips += '<span class="chip ok">проведено</span>';
+        if(m.status === "cancelled") chips += '<span class="chip">отменено</span>';
+        if(m.paid) chips += '<span class="chip ok">оплачено</span>';
+        else if(m.status === "done") chips += '<span class="chip warn">не оплачено</span>';
+        if(l.repeat === "once") chips += '<span class="chip">разовое</span>';
+
+        html += '<div class="les' + (m.status === "cancelled" ? " is-cancelled" : "") + '" role="button" tabindex="0"' +
+                ' data-id="' + esc(l.id) + '" data-date="' + isoDate(date) + '"' +
+                ' style="--stu:var(--s' + colorIndex(l.student) + ')">' +
+                '<span class="t">' + esc(l.time) + '<em> – ' + esc(endTime(l.time, l.dur)) + '</em></span>' +
+                '<span class="who"><i class="dot"></i>' + esc(l.student || "Без имени") + '</span>' +
+                '<span class="meta">' + esc(l.level) + ' · ' + (l.format === "online" ? "онлайн" : "очно") +
+                (l.kind === "group" ? " · группа" : "") + ' · ' + (parseInt(l.dur,10)||0) + ' мин · ' +
+                money.format(parseFloat(l.price)||0) + ' ₽</span>' +
+                (m.topic ? '<span class="topic">' + esc(m.topic) + '</span>' : '') +
+                '<span class="chips">' + chips +
+                '<span class="acts">' +
+                  '<button class="mini' + (m.status === "done" ? " on" : "") + '" data-act="done" title="Занятие проведено" aria-label="Отметить проведённым">✓</button>' +
+                  '<button class="mini' + (m.paid ? " on-pay" : "") + '" data-act="paid" title="Оплачено" aria-label="Отметить оплаченным">₽</button>' +
+                '</span></span>' +
+                '</div>';
+      }
+      html += '<button class="addrow" data-add="' + isoDate(date) + '">+ занятие</button>';
+      html += '</div>';
+    }
+    grid.innerHTML = html;
+
+    var due = stats.total - stats.paid;
+    var s = document.getElementById("stats");
+    s.innerHTML =
+      tile("Занятий", stats.count, "") +
+      tile("Часов", (stats.minutes/60).toLocaleString("ru-RU", {maximumFractionDigits:1}), "") +
+      tile("Сумма", money.format(stats.total) + " ₽", "") +
+      tile("Оплачено", money.format(stats.paid) + " ₽", "is-ok") +
+      tile("Ожидается", money.format(due) + " ₽", due > 0 ? "is-warn" : "");
+  }
+
+  function tile(k, v, cls){
+    return '<div class="stat ' + cls + '"><span class="k">' + k + '</span><span class="v">' + esc(v) + '</span></div>';
+  }
+
+  /* ---------------- render: students ---------------- */
+
+  function renderStudents(){
+    var wrap = document.getElementById("studentsWrap");
+    if(!state.lessons.length){
+      wrap.innerHTML = '<div class="empty">Пока нет ни одного ученика. Добавьте занятие на вкладке «Неделя».</div>';
+      return;
+    }
+    var byName = {};
+    state.lessons.forEach(function(l){
+      var n = l.student || "Без имени";
+      if(!byName[n]) byName[n] = {name:n, slots:[], count:0, minutes:0, week:0, level:l.level, format:l.format, kind:l.kind, note:""};
+      var g = byName[n];
+      g.count++;
+      g.minutes += (parseInt(l.dur,10)||0);
+      if(l.repeat === "weekly") g.week += (parseFloat(l.price)||0);
+      g.slots.push(DAYS_SHORT[(l.day||1)-1] + " " + l.time);
+      if(l.note && !g.note) g.note = l.note;
+    });
+    var rows = Object.keys(byName).sort(function(a,b){ return a.localeCompare(b,"ru"); }).map(function(n){ return byName[n]; });
+
+    var totalWeek = 0, totalMin = 0, totalCount = 0;
+    var html = '<table><thead><tr>' +
+      '<th>Ученик</th><th>Уровень</th><th>Формат</th><th>Когда</th>' +
+      '<th>Занятий&nbsp;/&nbsp;нед</th><th>Часов&nbsp;/&nbsp;нед</th><th>Доход&nbsp;/&nbsp;нед</th><th>Заметка</th>' +
+      '</tr></thead><tbody>';
+
+    var occ = allOccurrences();
+    rows.forEach(function(g){
+      totalWeek += g.week; totalMin += g.minutes; totalCount += g.count;
+      html += '<tr class="stu' + (openStudent === g.name ? ' is-open' : '') + '" data-name="' + esc(g.name) + '">' +
+        '<td><span class="name" style="--stu:var(--s' + colorIndex(g.name) + ')"><i></i>' + esc(g.name) +
+        '<b class="chev">›</b></span></td>' +
+        '<td>' + esc(g.level) + '</td>' +
+        '<td>' + (g.format === "online" ? "Онлайн" : "Очно") + (g.kind === "group" ? ", группа" : "") + '</td>' +
+        '<td class="num">' + esc(g.slots.join(", ")) + '</td>' +
+        '<td class="num">' + g.count + '</td>' +
+        '<td class="num">' + (g.minutes/60).toLocaleString("ru-RU", {maximumFractionDigits:1}) + '</td>' +
+        '<td class="num">' + money.format(g.week) + ' ₽</td>' +
+        '<td class="note">' + esc(g.note) + '</td>' +
+        '</tr>';
+      if(openStudent === g.name) html += historyRow(g.name, occ);
+    });
+    html += '</tbody><tfoot><tr>' +
+      '<td colspan="4">Итого · ' + rows.length + ' ' + plural(rows.length, ["ученик","ученика","учеников"]) + '</td>' +
+      '<td class="num">' + totalCount + '</td>' +
+      '<td class="num">' + (totalMin/60).toLocaleString("ru-RU", {maximumFractionDigits:1}) + '</td>' +
+      '<td class="num">' + money.format(totalWeek) + ' ₽</td><td></td>' +
+      '</tr></tfoot></table>';
+    wrap.innerHTML = html;
+  }
+
+  function historyRow(name, occ){
+    var list = occ.filter(function(o){ return (o.lesson.student || "Без имени") === name; }).slice(0, 12);
+    var inner = "";
+    if(!list.length){
+      inner = '<div class="hist-empty">Пока нет отметок. Они появятся, когда вы отметите занятие проведённым или запишете тему урока.</div>';
+    } else {
+      list.forEach(function(o){
+        var chips = "";
+        if(o.mark.status === "done") chips += '<span class="chip ok">проведено</span>';
+        if(o.mark.status === "cancelled") chips += '<span class="chip">отменено</span>';
+        if(o.mark.paid) chips += '<span class="chip ok">оплачено</span>';
+        else if(o.mark.status === "done") chips += '<span class="chip warn">не оплачено</span>';
+        inner += '<div class="hitem"><span class="hd">' +
+                 o.date.getDate() + " " + MONTHS_SHORT[o.date.getMonth()] +
+                 '</span><span class="hb">' +
+                 (o.mark.topic ? '<span class="ht">' + esc(o.mark.topic) + '</span>' : '<span class="ht" style="color:var(--ink-3);font-weight:400">Тема не записана</span>') +
+                 (o.mark.hw ? '<span class="hh">Задано: ' + esc(o.mark.hw) + '</span>' : '') +
+                 (chips ? '<span class="hs">' + chips + '</span>' : '') +
+                 '</span></div>';
+      });
+    }
+    return '<tr class="hist"><td colspan="8"><div class="hist-in">' + inner + '</div></td></tr>';
+  }
+
+  function plural(n, forms){
+    var a = Math.abs(n) % 100, b = a % 10;
+    if(a > 10 && a < 20) return forms[2];
+    if(b > 1 && b < 5) return forms[1];
+    if(b === 1) return forms[0];
+    return forms[2];
+  }
+
+  function renderFoot(){
+    document.getElementById("foot").innerHTML =
+      "<b>На телефон:</b> откройте эту страницу в браузере телефона и добавьте на домашний экран — " +
+      "в Safari через «Поделиться → На экран «Домой»», в Chrome через «⋮ → Добавить на главный экран». Появится иконка, как у приложения.<br>" +
+      "Расписание хранится в том браузере, где вы его ведёте, и остаётся после закрытия вкладки. " +
+      "Телефон и компьютер хранят свои копии по отдельности: чтобы перенести расписание, нажмите «Сохранить копию» на одном устройстве и «Загрузить копию» на другом.";
+  }
+
+  /* ---------------- modal ---------------- */
+
+  function fillSelects(){
+    var d = document.getElementById("fDay");
+    d.innerHTML = DAYS.map(function(n,i){ return '<option value="' + (i+1) + '">' + n + '</option>'; }).join("");
+    var lv = document.getElementById("fLevel");
+    lv.innerHTML = LEVELS.map(function(n){ return '<option value="' + n + '">' + n + '</option>'; }).join("");
+  }
+
+  function openEditor(id, dateIso){
+    editing = id;
+    editingDate = dateIso ? new Date(dateIso + "T00:00:00") : new Date();
+    var l = id ? state.lessons.filter(function(x){ return x.id === id; })[0] : null;
+    var dow = ((editingDate.getDay() + 6) % 7) + 1;
+
+    document.getElementById("sheetTitle").textContent = l ? "Занятие" : "Новое занятие";
+    document.getElementById("fStudent").value = l ? l.student : "";
+    document.getElementById("fDay").value = l ? l.day : dow;
+    document.getElementById("fTime").value = l ? l.time : "17:00";
+    document.getElementById("fDur").value = l ? l.dur : 60;
+    document.getElementById("fLevel").value = l ? l.level : "A2";
+    document.getElementById("fFormat").value = l ? l.format : "online";
+    document.getElementById("fKind").value = l ? l.kind : "solo";
+    document.getElementById("fPrice").value = l ? l.price : 2000;
+    document.getElementById("fRepeat").value = l ? l.repeat : "weekly";
+    document.getElementById("fDate").value = l && l.date ? l.date : isoDate(editingDate);
+    document.getElementById("fNote").value = l ? (l.note || "") : "";
+    toggleDateField();
+
+    var occ = document.getElementById("occBlock");
+    occ.hidden = !l;
+    document.getElementById("deleteBtn").hidden = !l;
+    if(l){
+      var key = weekKey(mondayOf(editingDate));
+      var m = markFor(key, l.id) || {status:"planned", paid:false, topic:"", hw:""};
+      document.getElementById("occLegend").textContent =
+        "Это занятие · " + DAYS[(editingDate.getDay()+6)%7].toLowerCase() + ", " +
+        editingDate.getDate() + " " + MONTHS_GEN[editingDate.getMonth()];
+      setStatus(m.status);
+      document.getElementById("fPaid").checked = !!m.paid;
+      document.getElementById("fTopic").value = m.topic || "";
+      document.getElementById("fHw").value = m.hw || "";
+    }
+
+    document.getElementById("overlay").hidden = false;
+    setTimeout(function(){ document.getElementById("fStudent").focus(); }, 30);
+  }
+
+  function setStatus(s){
+    formStatus = s || "planned";
+    var btns = document.querySelectorAll("#fStatus button");
+    for(var i=0;i<btns.length;i++){
+      btns[i].classList.toggle("on", btns[i].getAttribute("data-status") === formStatus);
+    }
+  }
+
+  function toggleDateField(){
+    document.getElementById("dateField").hidden = document.getElementById("fRepeat").value !== "once";
+  }
+
+  function closeEditor(){
+    document.getElementById("overlay").hidden = true;
+    editing = null;
+  }
+
+  function saveEditor(){
+    var name = document.getElementById("fStudent").value.trim();
+    if(!name){ toast("Впишите имя ученика или название группы"); document.getElementById("fStudent").focus(); return; }
+    var rep = document.getElementById("fRepeat").value;
+    var dateVal = document.getElementById("fDate").value;
+    if(rep === "once" && !dateVal){ toast("Укажите дату разового занятия"); return; }
+
+    var data = {
+      student: name,
+      day: parseInt(document.getElementById("fDay").value, 10),
+      time: document.getElementById("fTime").value || "17:00",
+      dur: Math.max(15, parseInt(document.getElementById("fDur").value, 10) || 60),
+      level: document.getElementById("fLevel").value,
+      format: document.getElementById("fFormat").value,
+      kind: document.getElementById("fKind").value,
+      price: Math.max(0, parseFloat(document.getElementById("fPrice").value) || 0),
+      repeat: rep,
+      date: rep === "once" ? dateVal : null,
+      note: document.getElementById("fNote").value.trim()
+    };
+    if(rep === "once"){
+      var dd = new Date(dateVal + "T00:00:00");
+      data.day = ((dd.getDay() + 6) % 7) + 1;
+    }
+
+    if(editing){
+      var l = state.lessons.filter(function(x){ return x.id === editing; })[0];
+      for(var k in data) l[k] = data[k];
+      var key = weekKey(mondayOf(editingDate));
+      setMark(key, l.id, {
+        status: formStatus,
+        paid: document.getElementById("fPaid").checked,
+        topic: document.getElementById("fTopic").value.trim(),
+        hw: document.getElementById("fHw").value.trim()
+      });
+    } else {
+      data.id = "l" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36);
+      state.lessons.push(data);
+      if(rep === "once") anchor = mondayOf(new Date(dateVal + "T00:00:00"));
+    }
+    state.demo = false;
+    save();
+    closeEditor();
+    render();
+    toast("Сохранено");
+  }
+
+  function deleteLesson(){
+    if(!editing) return;
+    var l = state.lessons.filter(function(x){ return x.id === editing; })[0];
+    if(!confirm("Удалить занятие «" + (l ? l.student : "") + "» из расписания?")) return;
+    state.lessons = state.lessons.filter(function(x){ return x.id !== editing; });
+    Object.keys(state.marks).forEach(function(w){
+      delete state.marks[w][editing];
+      if(!Object.keys(state.marks[w]).length) delete state.marks[w];
+    });
+    save();
+    closeEditor();
+    render();
+    toast("Занятие удалено");
+  }
+
+  /* ---------------- events ---------------- */
+
+  fillSelects();
+
+  document.getElementById("prevWeek").addEventListener("click", function(){ anchor = addDays(anchor, -7); render(); });
+  document.getElementById("nextWeek").addEventListener("click", function(){ anchor = addDays(anchor, 7); render(); });
+  document.getElementById("thisWeek").addEventListener("click", function(){ anchor = mondayOf(new Date()); render(); });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(t){
+    t.addEventListener("click", function(){
+      view = t.getAttribute("data-view");
+      Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(x){
+        var on = x === t;
+        x.classList.toggle("is-on", on);
+        x.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      render();
+    });
+  });
+
+  document.getElementById("grid").addEventListener("click", function(e){
+    var act = e.target.closest("[data-act]");
+    var les = e.target.closest(".les");
+    var add = e.target.closest("[data-add]");
+    if(act && les){
+      e.stopPropagation();
+      var id = les.getAttribute("data-id");
+      var d = new Date(les.getAttribute("data-date") + "T00:00:00");
+      var key = weekKey(mondayOf(d));
+      var m = markFor(key, id) || {status:"planned", paid:false, topic:"", hw:""};
+      if(act.getAttribute("data-act") === "done"){
+        setMark(key, id, {status: m.status === "done" ? "planned" : "done"});
+      } else {
+        setMark(key, id, {paid: !m.paid});
+      }
+      render();
+      return;
+    }
+    if(les){ openEditor(les.getAttribute("data-id"), les.getAttribute("data-date")); return; }
+    if(add){ openEditor(null, add.getAttribute("data-add")); }
+  });
+
+  document.getElementById("grid").addEventListener("keydown", function(e){
+    if(e.key !== "Enter" && e.key !== " ") return;
+    var les = e.target.closest(".les");
+    if(les){ e.preventDefault(); openEditor(les.getAttribute("data-id"), les.getAttribute("data-date")); }
+  });
+
+  document.getElementById("fStatus").addEventListener("click", function(e){
+    var b = e.target.closest("[data-status]");
+    if(b) setStatus(b.getAttribute("data-status"));
+  });
+  document.getElementById("fRepeat").addEventListener("change", toggleDateField);
+  document.getElementById("saveBtn").addEventListener("click", saveEditor);
+  document.getElementById("cancelBtn").addEventListener("click", closeEditor);
+  document.getElementById("deleteBtn").addEventListener("click", deleteLesson);
+  document.getElementById("overlay").addEventListener("mousedown", function(e){
+    if(e.target === this) closeEditor();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && !document.getElementById("overlay").hidden) closeEditor();
+  });
+
+  document.getElementById("prevMonth").addEventListener("click", function(){
+    monthAnchor = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth() - 1, 1); render();
+  });
+  document.getElementById("nextMonth").addEventListener("click", function(){
+    monthAnchor = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth() + 1, 1); render();
+  });
+  document.getElementById("thisMonth").addEventListener("click", function(){
+    var n = new Date(); monthAnchor = new Date(n.getFullYear(), n.getMonth(), 1); render();
+  });
+
+  document.getElementById("studentsWrap").addEventListener("click", function(e){
+    var tr = e.target.closest("tr.stu");
+    if(!tr) return;
+    var n = tr.getAttribute("data-name");
+    openStudent = (openStudent === n) ? null : n;
+    render();
+  });
+
+  document.getElementById("clearDemo").addEventListener("click", function(){
+    state = {demo:false, lessons:[], marks:{}};
+    save();
+    render();
+    toast("Примеры удалены");
+  });
+
+  document.getElementById("restoreInput").addEventListener("change", function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var v = JSON.parse(String(reader.result));
+        if(!v || !Array.isArray(v.lessons)) throw new Error("bad");
+        state = {demo:false, lessons:v.lessons, marks:v.marks || {}};
+        save();
+        render();
+        toast("Расписание загружено");
+      }catch(err){
+        toast("Файл не подходит: нужен файл, сохранённый этой же страницей");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  document.getElementById("backupBtn").addEventListener("click", function(){
+    var name = "raspisanie-" + isoDate(new Date()) + ".json";
+    var data = JSON.stringify(state, null, 2);
+    if(downloads){
+      downloads.save({filename:name, data:data}).then(function(){
+        toast("Копия сохранена");
+      }).catch(function(err){
+        if(err && err.code === "declined") return;
+        toast("Не удалось сохранить копию");
+      });
+      return;
+    }
+    // Обычная страница вне Claude: сохраняем файл средствами браузера
+    try{
+      var url = URL.createObjectURL(new Blob([data], {type:"application/json"}));
+      var a = document.createElement("a");
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      toast("Копия сохранена");
+    }catch(err){
+      toast("Браузер не дал сохранить файл");
+    }
+  });
+
+  // Полноэкранный режим, когда страницу добавили на домашний экран телефона
+  [["apple-mobile-web-app-capable","yes"],
+   ["mobile-web-app-capable","yes"],
+   ["apple-mobile-web-app-status-bar-style","default"],
+   ["theme-color","#2E3A8C"]].forEach(function(p){
+    var m = document.createElement("meta");
+    m.name = p[0]; m.content = p[1];
+    document.head.appendChild(m);
+  });
+
+  render();
+
+  if(window.claude && typeof window.claude.use === "function"){
+    window.claude.use("downloads").then(function(d){
+      downloads = d;
+    }).catch(function(){});
+  }
+})();
+</script>
