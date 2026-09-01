@@ -421,7 +421,7 @@ function renderStudents() {
   const query = (els.studentSearch?.value || "").trim().toLowerCase();
   const students = [...state.students]
     .sort((a, b) => a.name.localeCompare(b.name, "ru"))
-    .filter((student) => `${student.name} ${student.contact || ""}`.toLowerCase().includes(query));
+    .filter((student) => `${student.name} ${student.contact || ""} ${student.goal || ""} ${student.age || ""} ${student.level || ""}`.toLowerCase().includes(query));
 
   if (!students.length) {
     els.studentsList.innerHTML = emptyState({
@@ -438,11 +438,16 @@ function renderStudents() {
     const lessons = state.lessons.filter((lesson) => lesson.studentId === student.id);
     const completed = lessons.filter((lesson) => lesson.status === "completed").length;
     const next = sortedLessons(lessons).find((lesson) => lesson.status !== "cancelled" && new Date(`${lesson.date}T${lesson.time}:00`) >= new Date());
+    const profile = [
+      student.age ? `${student.age} ${plural(student.age, ["год", "года", "лет"])}` : "",
+      student.level && student.level !== "Не указан" ? student.level : "",
+    ].filter(Boolean).join(" · ") || "Профиль не заполнен";
     return `<article class="student-card" data-student-id="${student.id}" tabindex="0" role="button">
       <div class="student-top">
         <span class="student-avatar">${escapeHTML(initials(student.name))}</span>
-        <div><h3>${escapeHTML(student.name)}</h3><p>${escapeHTML(student.level || "Уровень не указан")}</p></div>
+        <div><h3>${escapeHTML(student.name)}</h3><p>${escapeHTML(profile)}</p></div>
       </div>
+      <span class="student-goal">${escapeHTML(student.goal || "Цель не указана")}</span>
       <div class="student-meta">
         <div><span>Проведено</span><strong>${completed} ${plural(completed, ["урок", "урока", "уроков"])}</strong></div>
         <div><span>Следующий</span><strong>${next ? `${formatShortDate(next.date)}, ${next.time}` : "Не назначен"}</strong></div>
@@ -516,6 +521,8 @@ function openStudentDialog(studentId = "") {
   els.deleteStudentButton.classList.toggle("hidden", !student);
   els.studentForm.elements.studentId.value = student?.id || "";
   els.studentForm.elements.name.value = student?.name || "";
+  els.studentForm.elements.goal.value = student?.goal || "Не указана";
+  els.studentForm.elements.age.value = student?.age || "";
   els.studentForm.elements.level.value = student?.level || "Не указан";
   els.studentForm.elements.rate.value = student?.rate || "";
   els.studentForm.elements.contact.value = student?.contact || "";
@@ -566,6 +573,8 @@ function handleStudentSubmit(event) {
   const student = {
     id: existingId || uid("student"),
     name: form.get("name").trim(),
+    goal: form.get("goal"),
+    age: Number(form.get("age")) || null,
     level: form.get("level"),
     rate: Number(form.get("rate")) || 0,
     contact: form.get("contact").trim(),

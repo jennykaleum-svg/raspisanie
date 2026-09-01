@@ -349,7 +349,22 @@
             <input name="name" required maxlength="80" placeholder="Имя ученика" />
           </label>
           <label>
-            Уровень английского
+            Цель обучения
+            <select name="goal">
+              <option value="Не указана">Не указана</option>
+              <option value="ЕГЭ Английский">ЕГЭ Английский</option>
+              <option value="ОГЭ Английский">ОГЭ Английский</option>
+              <option value="General English">General English</option>
+              <option value="IELTS">IELTS</option>
+              <option value="Математика">Математика</option>
+            </select>
+          </label>
+          <label>
+            Возраст, лет
+            <input name="age" type="number" min="3" max="100" step="1" inputmode="numeric" placeholder="Например, 15" />
+          </label>
+          <label>
+            Уровень английского (если нужен)
             <select name="level">
               <option value="Не указан">Не указан</option>
               <option>A1 — Beginner</option>

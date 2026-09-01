@@ -1071,6 +1071,18 @@ h2 {
   font-size: 10px;
 }
 
+.student-goal {
+  display: inline-flex;
+  margin-top: 14px;
+  padding: 6px 9px;
+  border-radius: 9px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
 .student-meta {
   display: grid;
   grid-template-columns: 1fr 1fr;
