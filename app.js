@@ -68,6 +68,9 @@ const els = {
   tutorNameInput: document.querySelector("#tutorNameInput"),
   lessonDialog: document.querySelector("#lessonDialog"),
   lessonForm: document.querySelector("#lessonForm"),
+  lessonStudentDropdown: document.querySelector("#lessonStudentDropdown"),
+  lessonStudentToggle: document.querySelector("#lessonStudentToggle"),
+  lessonStudentSummary: document.querySelector("#lessonStudentSummary"),
   lessonStudentOptions: document.querySelector("#lessonStudentOptions"),
   lessonModalTitle: document.querySelector("#lessonModalTitle"),
   deleteLessonButton: document.querySelector("#deleteLessonButton"),
@@ -498,7 +501,29 @@ function updateStudentOptions(selectedIds = []) {
       </label>`).join("")
     : `<span class="student-options-empty">Нет учеников</span>`;
   els.noStudentsHint.classList.toggle("visible", !sorted.length);
+  els.lessonStudentToggle.disabled = !sorted.length;
   els.lessonForm.querySelector('[type="submit"]').disabled = !sorted.length;
+  updateStudentSummary();
+}
+
+function updateStudentSummary() {
+  const selectedNames = [...els.lessonStudentOptions.querySelectorAll('input[name="studentIds"]:checked')]
+    .map((input) => getStudent(input.value)?.name)
+    .filter(Boolean);
+
+  if (!selectedNames.length) {
+    els.lessonStudentSummary.textContent = "Выберите учеников";
+  } else if (selectedNames.length <= 2) {
+    els.lessonStudentSummary.textContent = selectedNames.join(", ");
+  } else {
+    els.lessonStudentSummary.textContent = `${selectedNames.slice(0, 2).join(", ")} и ещё ${selectedNames.length - 2}`;
+  }
+}
+
+function setStudentDropdown(open) {
+  els.lessonStudentOptions.classList.toggle("hidden", !open);
+  els.lessonStudentToggle.setAttribute("aria-expanded", String(open));
+  els.lessonStudentDropdown.classList.toggle("open", open);
 }
 
 function openLessonDialog(lessonId = "", presetDate = "") {
@@ -512,6 +537,7 @@ function openLessonDialog(lessonId = "", presetDate = "") {
 
   const lesson = state.lessons.find((item) => item.id === lessonId);
   els.lessonForm.reset();
+  setStudentDropdown(false);
   els.lessonModalTitle.textContent = lesson ? "Редактировать занятие" : "Новое занятие";
   els.deleteLessonButton.classList.toggle("hidden", !lesson);
   els.lessonForm.elements.lessonId.value = lesson?.id || "";
@@ -864,6 +890,12 @@ function bindEvents() {
   els.forgotPasswordButton.addEventListener("click", handlePasswordReset);
 
   document.addEventListener("click", (event) => {
+    if (event.target.closest("#lessonStudentToggle")) {
+      setStudentDropdown(els.lessonStudentToggle.getAttribute("aria-expanded") !== "true");
+    } else if (!event.target.closest("#lessonStudentDropdown")) {
+      setStudentDropdown(false);
+    }
+
     const navButton = event.target.closest("[data-view]");
     if (navButton) showView(navButton.dataset.view);
 
@@ -918,6 +950,7 @@ function bindEvents() {
   });
   els.studentSearch.addEventListener("input", renderStudents);
   els.lessonForm.addEventListener("submit", handleLessonSubmit);
+  els.lessonStudentOptions.addEventListener("change", updateStudentSummary);
   els.studentForm.addEventListener("submit", handleStudentSubmit);
   els.deleteLessonButton.addEventListener("click", deleteLesson);
   els.deleteStudentButton.addEventListener("click", deleteStudent);
